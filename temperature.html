@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <title>Document</title>
+    <style>
+        
+        *
+{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+}
+
+.outer
+{
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to top left, #1d444e , #a8f5ff);
+}
+.inner
+{
+    width: 700px;
+    height: 200px;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    margin: 0 auto;
+    position: relative;
+    top: 20%;
+    transform: translateY(-50%);
+    padding: 20px 60px;
+    background-color: #ffffffcc;
+    border-radius: 8px;
+    box-shadow: 5px 5px 5px #0a0c0f;
+    z-index: 2;
+
+    /* border-radius: 10%; */
+
+}
+.image{
+    /* top: 80%; */
+    
+    /* display: flex; */
+    padding-left: 37%;
+    padding-top: 0%;
+    
+    justify-content: center;
+    /* align-items: center; */
+     
+}
+img{
+    margin-top: 40px;
+    height:200px;
+    width:400px;
+    border-radius: 10px;
+    border: 2px solid aliceblue;
+}
+input
+{
+    width: 30%;
+    padding: 7px;
+    border: 2px solid #cccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-top: 4px;
+}
+    </style>
+</head>
+<body>
+
+    <div class="outer">
+        <div class="image">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwlt21aWfoCqR_lEyFXOeKF4DCA10ePNP6Cg&usqp=CAU" alt="" >
+        </div>
+        <div class="inner">
+            
+            <div ng-app="temperatureApp" ng-controller="temperatureController" >
+                <h1 style="text-align: center; text-decoration: underline; font-size: 35px;">Temperature converter</h1>
+                <br><br>
+                <input type="number" ng-model="temperature" ng-change="convertTemperature()" placeholder="value"/>
+                <select ng-model="fromUnit" ng-options="unit for unit in temperatureUnits" ng-change="convertTemperature()">celsius
+                </select>
+                <span>=</span>
+                <span style="border: 2px solid black; padding: 2px; color: black; font-weight: 500px; border-radius: 5px;">{{convertedTemperature}}</span> &nbsp;
+                <select ng-model="toUnit" ng-options="unit for unit in temperatureUnits" ng-change="convertTemperature()">
+                </select>
+              </div>
+        </div>
+    </div>
+      <script>
+        angular.module('temperatureApp', [])
+  .controller('temperatureController', function($scope) {
+    $scope.temperature = 0;
+    $scope.fromUnit = 'Celsius';
+    $scope.toUnit = 'Fahrenheit';
+    $scope.temperatureUnits = ['Celsius', 'Fahrenheit', 'Kelvin'];
+    
+    $scope.convertTemperature = function() {
+      var input = $scope.temperature;
+      var output = 0;
+      var from = $scope.fromUnit;
+      var to = $scope.toUnit;
+      
+      // Convert from Celsius
+      if (from === 'Celsius') {
+        if (to === 'Fahrenheit') {
+          output = (input * 9/5) + 32;
+        } else if (to === 'Kelvin') {
+          output = input + 273.15;
+        } else {
+          output = input;
+        }
+      }
+      
+      // Convert from Fahrenheit
+      else if (from === 'Fahrenheit') {
+        if (to === 'Celsius') {
+          output = (input - 32) * 5/9;
+        } else if (to === 'Kelvin') {
+          output = (input - 32) * 5/9 + 273.15;
+        } else {
+          output = input;
+        }
+      }
+      
+      // Convert from Kelvin
+      else {
+        if (to === 'Celsius') {
+          output = input - 273.15;
+        } else if (to === 'Fahrenheit') {
+          output = (input - 273.15) * 9/5 + 32;
+        } else {
+          output = input;
+        }
+      }
+      
+      $scope.convertedTemperature = output.toFixed(2);
+    };
+    
+    $scope.convertTemperature();
+  });
+
+      </script>
+</body>
+</html>
